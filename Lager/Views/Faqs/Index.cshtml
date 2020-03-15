@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Lager.Models.Faq>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Frequently Asked Questions";
+}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
+</div>
+
+@if (SignInManager.IsSignedIn(User))
+{
+<p>
+    <a class="btn btn-light" role="button" asp-action="Create">Create New</a>
+</p>
+
+}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @Html.DisplayFor(modelItem => item.Question)
+                        </h5>
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.Answer)</p>
+                    </div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="card-footer">
+                            <span class="badge badge-primary"><a class="text-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a></span>
+                            <span class="badge badge-info"><a class="text-light" asp-action="Details" asp-route-id="@item.Id">Details</a></span>
+                            <span class="badge badge-danger"><a class="text-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
